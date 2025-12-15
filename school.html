@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivam Public School - Student Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; color: #333; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #0056b3; }
+        input, select, button { display: block; width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #0056b3; color: white; cursor: pointer; }
+        button:hover { background: #004494; }
+        table { width: 100%; border-collapse: collapse; overflow-x: auto; display: block; white-space: nowrap; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+        .footer { text-align: center; font-size: 12px; color: #999; margin-top: 20px; }
+        .hidden { display: none; }
+        .search { margin-bottom: 20px; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 50; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .flex { display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 10px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-blue { background: #0056b3; color: white; }
+        .btn-green { background: #28a745; color: white; }
+        .btn-red { background: #dc3545; color: white; }
+        .btn-gray { background: #6c757d; color: white; }
+        .text-center { text-align: center; }
+        .py-3 { padding: 12px 0; }
+        .text-xs { font-size: 12px; }
+        .text-gray-400 { color: #999; }
+        .min-h-screen { min-height: 100vh; }
+        .bg-gradient { background: linear-gradient(to bottom right, #dbeafe, #bfdbfe); }
+        .shadow { box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .rounded { border-radius: 8px; }
+        .p-4 { padding: 16px; }
+        .mb-4 { margin-bottom: 16px; }
+        .gap-3 { gap: 12px; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .left-3 { left: 12px; }
+        .top-3 { top: 12px; }
+        .text-gray-400 { color: #999; }
+        .hover\:bg-gray-50:hover { background: #f9f9f9; }
+        .overflow-x-auto { overflow-x: auto; }
+        .w-full { width: 100%; }
+        .max-w-md { max-width: 28rem; }
+        .space-y-4 > * + * { margin-top: 16px; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .flex-1 { flex: 1; }
+        .bg-white { background: white; }
+        .text-gray-800 { color: #333; }
+        .text-gray-600 { color: #666; }
+        .mt-1 { margin-top: 4px; }
+        .px-4 { padding-left: 16px; padding-right: 16px; }
+        .py-3 { padding-top: 12px; padding-bottom: 12px; }
+        .border { border: 1px solid #ccc; }
+        .rounded-lg { border-radius: 8px; }
+        .focus\:ring-2:focus { box-shadow: 0 0 0 2px #0056b3; }
+        .focus\:ring-blue-500:focus { box-shadow: 0 0 0 2px #0056b3; }
+        .focus\:border-transparent:focus { border-color: transparent; }
+        .right-3 { right: 12px; }
+        .text-gray-500 { color: #999; }
+        .shadow-xl { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .p-8 { padding: 32px; }
+        .mb-8 { margin-bottom: 32px; }
+        .font-bold { font-weight: bold; }
+        .font-semibold { font-weight: 600; }
+        .transition { transition: all 0.2s; }
+        .hover\:bg-blue-700:hover { background: #004494; }
+        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .grid-cols-1 { grid-template-columns: 1fr; }
+        .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gap-6 { gap: 24px; }
+        .max-w-2xl { max-width: 42rem; }
+        .p-12 { padding: 48px; }
+        .hover\:shadow-xl:hover { box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+        .transform { transform: scale(1); }
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        .text-2xl { font-size: 24px; }
+        .text-blue-600 { color: #0056b3; }
+        .text-green-600 { color: #28a745; }
+        .bg-gray-50 { background: #f9f9f9; }
+        .text-xl { font-size: 20px; }
+        .text-sm { font-size: 14px; }
+        .text-red-600 { color: #dc3545; }
+        .hover\:text-red-700:hover { color: #b02a37; }
+        .flex-row { flex-direction: row; }
+        .sm\:flex-row { flex-direction: row; }
+        .pl-10 { padding-left: 40px; }
+        .pr-4 { padding-right: 16px; }
+        .py-2 { padding-top: 8px; padding-bottom: 8px; }
+        .border-gray-300 { border-color: #ccc; }
+        .text-left { text-align: left; }
+        .text-sm { font-size: 14px; }
+        .font-semibold { font-weight: 600; }
+        .px-3 { padding-left: 12px; padding-right: 12px; }
+        .py-2 { padding-top: 8px; padding-bottom: 8px; }
+        .hover\:bg-gray-50:hover { background: #f9f9f9; }
+        .flex-gap-2 { display: flex; gap: 8px; }
+        .text-blue-600 { color: #0056b3; }
+        .hover\:text-blue-700:hover { color: #004494; }
+        .text-red-600 { color: #dc3545; }
+        .hover\:text-red-700:hover { color: #b02a37; }
+        .py-8 { padding: 32px 0; }
+        .text-gray-500 { color: #999; }
+        .fixed { position: fixed; }
+        .inset-0 { top: 0; left: 0; right: 0; bottom: 0; }
+        .bg-black { background: black; }
+        .bg-opacity-50 { opacity: 0.5; }
+        .z-50 { z-index: 50; }
+        .max-w-2xl { max-width: 42rem; }
+        .max-h-\[90vh\] { max-height: 90vh; }
+        .overflow-y-auto { overflow-y: auto; }
+        .md\:col-span-2 { grid-column: span 2; }
+        .mt-6 { margin-top: 24px; }
+        .bg-gray-300 { background: #6c757d; }
+        .text-gray-700 { color: #333; }
+        .hover\:bg-gray-400:hover { background: #5a6268; }
+        .mb-2 { margin-bottom: 8px; }
+        .hover\:text-blue-700:hover { color: #004494; }
+        .bg-green-600 { background: #28a745; }
+        .hover\:bg-green-700:hover { background: #218838; }
+        .space-y-3 > * + * { margin-top: 12px; }
+        .text-center { text-align: center; }
+        .py-3 { padding: 12px 0; }
+        .text-xs { font-size: 12px; }
+        .text-gray-400 { color: #999; }
+    </style>
+</head>
+<body>
+    <div id="login" class="container">
+        <h1>Shivam Public School</h1>
+        <p>Bhainsdehi, Betul</p>
+        <input type="text" id="id" placeholder="ID">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <div class="footer">Developer – Aditian Technology</div>
+    </div>
+
+    <div id="principal-dashboard" class="container hidden">
+        <h2>Principal Dashboard</h2>
+        <button onclick="showSection('students')">Students</button>
+        <button onclick="showSection('teachers')">Teachers</button>
+        <div class="footer">Developer – Aditian Technology</div>
+    </div>
+
+    <div id="students-section" class="container hidden">
+        <h1>Shivam Public School</h1>
+        <h2>Student Management System</h2>
+        <button onclick="showAddStudent()">Add Student</button>
+        <input type="text" id="search" class="search" placeholder="Search by Name, Roll Number, or Class" onkeyup="searchStudents()">
+        <table id="students-table">
+            <thead>
+                <tr>
+                    <th>Roll</th><th>Name</th><th>Father</th><th>Mother</th><th>Class</th><th>DOB</th><th>Mob1</th><th>Mob2</th><th>Address</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="students-body"></tbody>
+        </table>
+        <button onclick="backToDashboard()">Back</button>
+        <div class="footer">Developer – Aditian Technology</div>
+    </div>
+
+    <div id="teachers-section" class="container hidden">
+        <h2>Teachers Management</h2>
+        <button onclick="showAddTeacher()">Add Teacher</button>
+        <div id="teachers-list"></div>
+        <button onclick="backToDashboard()">Back</button>
+        <div class="footer">Developer – Aditian Technology</div>
+    </div>
+
+    <div id="add-student" class="container hidden">
+        <h2>Add Student</h2>
+        <input type="text" id="student-name" placeholder="Full Name">
+        <input type="text" id="student-father" placeholder="Father Name">
+        <input type="text" id="student-mother" placeholder="Mother Name">
+        <select id="student-class">
+            <option>Nursery</option><option>KG1</option><option>KG2</option>
+            <option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option>
+            <option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option>
+            <option>Class 11</option><option>Class 12</option>
+        </select>
+        <input type="text" id="student-roll" placeholder="Roll Number">
+        <input type="text" id="student-mob1" placeholder="Mobile Number 1">
+        <input type="text" id="student-mob2" placeholder="Mobile Number 2">
+        <input type="text" id="student-address" placeholder="Address">
+        <input type="date" id="student-dob" placeholder="Date of Birth">
+        <button onclick="addStudent()">Save</button>
+        <button onclick="showSection('students')">Cancel</button>
+    </div>
+
+    <div id="add-teacher" class="container hidden">
+        <h2>Add Teacher</h2>
+        <input type="text" id="teacher-name" placeholder="Full Name">
+        <input type="text" id="teacher-address" placeholder="Address">
+        <select id="teacher-class">
+            <option>Nursery</option><option>KG1</option><option>KG2</option>
+            <option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option>
+            <option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option>
+            <option>Class 11</option><option>Class 12</option>
+        </select>
+        <input type="date" id="teacher-dob" placeholder="Date of Birth">
+        <input type="text" id="teacher-mobile" placeholder="Mobile Number">
+        <button onclick="addTeacher()">Save</button>
+        <button onclick="showSection('teachers')">Cancel</button>
+    </div>
+
+    <script>
+        let currentView = 'login';
+        let currentUser = null;
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+        let searchTerm = '';
+        let showAddStudent = false;
+        let showAddTeacher = false;
+        let editingStudent = null;
+        let editingTeacher = null;
+
+        const classes = ['Nursery', 'KG1', 'KG2', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12'];
+
+        let studentForm = {
+            fullName: '', fatherName: '', motherName: '', class: '', rollNumber: '', mobile1: '', mobile2: '', address: '', dob: ''
+        };
+
+        let teacherForm = {
+            fullName: '', address: '', assignedClass: '', dob: '', mobile: ''
+        };
+
+        function login() {
+            const id = document.getElementById('id').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (!id || !password) {
+                alert('Please enter both ID and Password');
+                return;
+            }
+            if (id === 'principal' && password === 'admin123') {
+                currentUser = { role: 'principal', name: 'Principal' };
+                currentView = 'principal-home';
+                document.getElementById('id').value = '';
+                document.getElementById('password').value = '';
+                render();
+            } else {
+                const teacher = teachers.find(t => t.id === id && t.password === password);
+                if (teacher) {
+                    currentUser = { role: 'teacher', name: teacher.fullName, assignedClass: teacher.assignedClass };
+                    currentView = 'teacher-students';
+                    document.getElementById('id').value = '';
+                    document.getElementById('password').value = '';
+                    render();
+                } else {
+                    alert('Invalid ID or Password');
+                }
+            }
+        }
+
+        function showSection(section) {
+            currentView = section === 'students' ? 'principal-students' : 'principal-teachers';
+            render();
+        }
+
+        function backToDashboard() {
+            currentView = 'principal-home';
+            render();
+        }
+
+        function loadStudents() {
+            const tbody = document.getElementById('students-body');
+            tbody.innerHTML = '';
+            const filtered = currentUser?.role === 'teacher' ? students.filter(s => s.class === currentUser.assignedClass) : students;
+            const searched = filtered.filter(s =>
+                s.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                s.rollNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                s.class.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            searched.forEach((s, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td>${s.rollNumber}</td><td>${s.fullName}</td><td>${s.fatherName}</td><td>${s.motherName}</td><td>${s.class}</td><td>${s.dob}</td><td>${s.mobile1}</td><td>${s.mobile2}</td><td>${s.address}</td>
+                    <td>${currentUser?.role === 'principal' ? `<button onclick="editStudent(${idx})">Edit</button><button onclick="deleteStudent(${s.id})">Delete</button>` : ''}</td>
+                </tr>`;
+            });
+        }
+
+        function searchStudents() {
+            searchTerm = document.getElementById('search').value;
+            loadStudents();
+        }
+
+        function showAddStudent() {
+            showAddStudent = true;
+            render();
+        }
+
+        function addStudent() {
+            if (!studentForm.fullName || !studentForm
